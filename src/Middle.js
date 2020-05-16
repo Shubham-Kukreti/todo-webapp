@@ -26,8 +26,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     }
 
     useEffect(()=>{
-        fetchData() 
-         
+        fetchData()  
      },[])
 
     const addClicked = ()=>{
@@ -128,8 +127,8 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
                 <td>{task.taskName}</td>
                 <td>{task.time}</td>
                 <td>
-                    <Button variant="secondary" onClick={()=>upDate(index)} >Update</Button>{' '}
-                    <Button variant="secondary" onClick={()=>deleteTask(task.taskName)}>Delete</Button>
+                    <Button variant="secondary" className="task-btn" onClick={()=>upDate(index)}>Update</Button>{' '}
+                    <Button variant="secondary" className="task-btn" onClick={()=>deleteTask(task.taskName)}>Delete</Button>
                 </td>
             </tr>
             
@@ -140,7 +139,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     
     return(
         <div id="middle">
-            <Table striped bordered hover>
+            <Table striped bordered hover id="tasks">
                 <thead>
                     <tr>
                     <th>#</th>
