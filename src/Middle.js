@@ -18,7 +18,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     
 
     const fetchData = ()=>{
-        axios.get('http://localhost:8080/http://localhost:6000/')
+        axios.get('https://todo-webapp-server.herokuapp.com/')
         .then((res)=>{
             setTasks(res.data)
         })
@@ -42,7 +42,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         handleClose()
         const tName = document.getElementById('task-name').value
         const tTime = document.getElementById('task-time').value
-        axios.post('http://localhost:8080/http://localhost:6000/addTask',{
+        axios.post('https://todo-webapp-server.herokuapp.com/addTask',{
             'tName':tName,
             'tTime':tTime
         })
@@ -68,7 +68,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         setAddBtn(false)
         handleShow()
 
-        axios.get('http://localhost:8080/http://localhost:6000/')
+        axios.get('https://todo-webapp-server.herokuapp.com/')
         .then(res=>{
             console.log(res.data[index])
             setTaskName(res.data[index].taskName)
@@ -85,7 +85,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         handleClose()
         const tName = document.getElementById('task-name').value
         const tTime = document.getElementById('task-time').value
-        axios.post('http://localhost:8080/http://localhost:6000/upDate',{
+        axios.post('https://todo-webapp-server.herokuapp.com/upDate',{
             'tName':tName,
             'update':taskForUpdate,
             'tTime':tTime
@@ -106,7 +106,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     }
 
     const deleteTask = (tName)=>{
-        axios.post('http://localhost:8080/http://localhost:6000/delete',{'tName':tName})
+        axios.post('https://todo-webapp-server.herokuapp.com/delete',{'tName':tName})
         .then(res=>{
             if(res.data.status==="deleted"){
                 swal("Deleted!","Task Deleted succesfully","success")
