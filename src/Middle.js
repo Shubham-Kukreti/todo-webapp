@@ -10,6 +10,7 @@ const [add,setAdd] = useState(true)
 const [addBtn,setAddBtn] = useState(true)
 const [taskName,setTaskName] = useState("")
 const [taskTime,setTaskTime] = useState("")
+const [taskDate,settaskDate] = useState("")
 const [taskForUpdate,setTaskForUpdate] = useState("")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -18,7 +19,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     
 
     const fetchData = ()=>{
-        axios.get('https://todo-webapp-server.herokuapp.com/')
+        axios.get('/send')
         .then((res)=>{
             setTasks(res.data)
         })
@@ -42,9 +43,11 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         handleClose()
         const tName = document.getElementById('task-name').value
         const tTime = document.getElementById('task-time').value
-        axios.post('https://todo-webapp-server.herokuapp.com/addTask',{
+        const tDate = document.getElementById('task-date').value
+        axios.post('/addTask',{
             'tName':tName,
-            'tTime':tTime
+            'tTime':tTime,
+            'tDate':tDate
         })
         .then((res)=>{
             if(res.data.status==="added"){
@@ -68,12 +71,13 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         setAddBtn(false)
         handleShow()
 
-        axios.get('https://todo-webapp-server.herokuapp.com/')
+        axios.get('/send')
         .then(res=>{
             console.log(res.data[index])
             setTaskName(res.data[index].taskName)
             setTaskForUpdate(res.data[index].taskName)
             setTaskTime(res.data[index].time)
+            settaskDate(res.data[index].date)
         })
         .catch(err=>{
 
@@ -85,10 +89,12 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
         handleClose()
         const tName = document.getElementById('task-name').value
         const tTime = document.getElementById('task-time').value
-        axios.post('https://todo-webapp-server.herokuapp.com/upDate',{
+        const tDate = document.getElementById('task-date').value
+        axios.post('/upDate',{
             'tName':tName,
             'update':taskForUpdate,
-            'tTime':tTime
+            'tTime':tTime,
+            'tDate':tDate
 
         })
         .then((res)=>{
@@ -106,7 +112,7 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     }
 
     const deleteTask = (tName)=>{
-        axios.post('https://todo-webapp-server.herokuapp.com/delete',{'tName':tName})
+        axios.post('/delete',{'tName':tName})
         .then(res=>{
             if(res.data.status==="deleted"){
                 swal("Deleted!","Task Deleted succesfully","success")
@@ -123,9 +129,10 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
     const populate = (task,index)=>{     
         return(
             <tr key={index}>
-                <td>{index}</td>
+                <td>{index+1}</td>
                 <td>{task.taskName}</td>
                 <td>{task.time}</td>
+                <td>{task.date}</td>
                 <td>
                     <Button variant="secondary" className="task-btn" onClick={()=>upDate(index)}>Update</Button>{' '}
                     <Button variant="secondary" className="task-btn" onClick={()=>deleteTask(task.taskName)}>Delete</Button>
@@ -143,7 +150,8 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
                 <thead>
                     <tr>
                     <th>#</th>
-                    <th>Task Name </th>
+                    <th>Task Name</th>
+                    <th>Date</th>
                     <th>Time</th>
                     <th>Actions</th>
                     </tr>
@@ -173,11 +181,22 @@ const [taskForUpdate,setTaskForUpdate] = useState("")
                         <InputGroup.Text id="basic-addon1">Time</InputGroup.Text>
                     </InputGroup.Prepend>
                     <FormControl
+                        type="date"
+                        id = "task-date"
+                        defaultValue = {taskDate}
+                    />
+                </InputGroup>
+                <InputGroup className="mb-3">
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id="basic-addon1">Time</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <FormControl
                         type="time"
                         id = "task-time"
                         defaultValue = {taskTime}
                     />
                 </InputGroup>
+                
                 </Modal.Body>
                 <Modal.Footer>
                 {
